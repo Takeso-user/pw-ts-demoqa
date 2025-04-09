@@ -5,6 +5,7 @@ test-results/
 playwright/.cache/
 
 allure*
+screenshots/
 
 dist/
 build/
