@@ -17,7 +17,14 @@
     "test:ci:radio-button": "cross-env TEST_MODE=ci cucumber-js src/features/radio-button.feature",
     "test:dev:radio-button": "cross-env TEST_MODE=dev cucumber-js src/features/radio-button.feature",
     "report:ci": "cross-env TEST_MODE=ci cucumber-js --format html:cucumber-report-ci.html",
-    "report:dev": "cross-env TEST_MODE=dev cucumber-js --format html:cucumber-report-dev.html"
+    "report:dev": "cross-env TEST_MODE=dev cucumber-js --format html:cucumber-report-dev.html",
+    "allure:clean": "rimraf allure-results allure-report",
+    "allure:generate": "allure generate allure-results -o allure-report --clean",
+    "allure:open": "allure open allure-report",
+    "test:allure": "npm run allure:clean && cucumber-js",
+    "test:allure:ci": "cross-env TEST_MODE=ci npm run allure:clean && cross-env TEST_MODE=ci cucumber-js",
+    "test:allure:dev": "cross-env TEST_MODE=dev npm run allure:clean && cross-env TEST_MODE=dev cucumber-js",
+    "posttest:allure": "npm run allure:generate"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +40,10 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
-    "@playwright/test": "^1.51.1"
+    "@playwright/test": "^1.51.1",
+    "allure-commandline": "^2.33.0",
+    "allure-cucumberjs": "^3.2.1",
+    "allure-js-commons": "^3.2.1",
+    "rimraf": "^6.0.1"
   }
 }

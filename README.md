@@ -8,6 +8,7 @@ This project represents an automation testing framework for web elements on [Dem
 - [Project Structure](#project-structure)
 - [Installation](#installation)
 - [Running Tests](#running-tests)
+- [Allure Reporting](#allure-reporting)
 - [Implemented Tests](#implemented-tests)
 - [Extending Tests](#extending-tests)
 - [Technologies](#technologies)
@@ -25,10 +26,13 @@ This project represents an automation testing framework for web elements on [Dem
 ## Project Structure
 
 ```
+├── allure.config.js     # Allure reporting configuration
 ├── cucumber.js          # Cucumber configuration
 ├── package.json         # Dependencies and npm scripts
 ├── tsconfig.json        # TypeScript configuration
 ├── downloads/           # Directory for downloaded files during testing
+├── allure-results/      # Directory for Allure test execution results (generated)
+├── allure-report/       # Directory for Allure HTML reports (generated)
 └── src/
     ├── features/        # Cucumber features (BDD specifications)
     │   ├── text-box.feature
@@ -113,6 +117,66 @@ npm run report:dev
 
 After running, HTML reports will be created in the project root directory with the test execution results.
 
+## Allure Reporting
+
+This project is configured with Allure reporting to provide detailed and interactive test reports suitable for CI/CD environments like Jenkins.
+
+### Running Tests with Allure
+
+```bash
+# Run all tests with Allure reporting
+npm run test:allure
+
+# Run tests with Allure reporting in CI mode
+npm run test:allure:ci
+
+# Run tests with Allure reporting in development mode
+npm run test:allure:dev
+```
+
+### Working with Allure Reports
+
+```bash
+# Clean previous Allure results and reports
+npm run allure:clean
+
+# Generate Allure HTML report from results
+npm run allure:generate
+
+# Open the Allure report in your default browser
+npm run allure:open
+```
+
+### Jenkins Integration
+
+For Jenkins integration:
+
+1. Install the Allure Jenkins plugin
+2. Configure your Jenkins job to run tests with `npm run test:allure:ci`
+3. Configure the Allure plugin to use the `allure-results` directory
+4. Add a post-build action to publish the Allure reports
+
+Example Jenkins pipeline step:
+
+```groovy
+stage('Test') {
+    steps {
+        sh 'npm run test:allure:ci'
+    }
+    post {
+        always {
+            allure([
+                includeProperties: false,
+                jdk: '',
+                properties: [],
+                reportBuildPolicy: 'ALWAYS',
+                results: [[path: 'allure-results']]
+            ])
+        }
+    }
+}
+```
+
 ## Implemented Tests
 
 | Section                | Test Scenarios                                                                                                                          |
@@ -156,6 +220,7 @@ Feature: New Functionality
 - **Playwright**: Modern framework for web application testing automation
 - **Cucumber**: BDD framework for writing tests in a human-readable format
 - **Page Object Model**: Design pattern for organizing test code
+- **Allure**: Framework for generating detailed test reports
 
 ## License
 

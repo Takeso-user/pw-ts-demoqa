@@ -4,6 +4,8 @@ playwright-report/
 test-results/
 playwright/.cache/
 
+allure*
+
 dist/
 build/
 
