@@ -70,27 +70,48 @@ npx playwright install
 
 ## Running Tests
 
+### Run Modes
+
+This project supports two test execution modes:
+
+1. **CI/CD Mode** - Headless browser execution for continuous integration, optimized for speed and stability
+2. **Development Mode** - Visual browser execution with slower speed for debugging and development
+
 ### Run all tests
 
 ```bash
+# Default mode (CI/CD)
 npm test
+
+# CI/CD mode explicitly
+npm run test:ci
+
+# Development mode
+npm run test:dev
 ```
 
 ### Run specific tests
 
-| Functionality | Command                     |
-| ------------- | --------------------------- |
-| Text Box      | `npm run test:text-box`     |
-| Check Box     | `npm run test:check-box`    |
-| Radio Button  | `npm run test:radio-button` |
+| Functionality | CI/CD Mode                     | Development Mode                |
+| ------------- | ------------------------------ | ------------------------------- |
+| Text Box      | `npm run test:ci:text-box`     | `npm run test:dev:text-box`     |
+| Check Box     | `npm run test:ci:check-box`    | `npm run test:dev:check-box`    |
+| Radio Button  | `npm run test:ci:radio-button` | `npm run test:dev:radio-button` |
 
 ### Generate report
 
 ```bash
+# Default report
 npm run report
+
+# CI/CD mode report
+npm run report:ci
+
+# Development mode report
+npm run report:dev
 ```
 
-After running, a `cucumber-report.html` file will be created in the project root directory with the test execution report.
+After running, HTML reports will be created in the project root directory with the test execution results.
 
 ## Implemented Tests
 
