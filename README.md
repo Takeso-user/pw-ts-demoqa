@@ -1,91 +1,141 @@
-# Тестирование Web-элементов на DemoQA.com
+# Web Elements Testing on DemoQA.com
 
-Этот проект представляет собой автоматизацию тестирования веб-элементов на сайте [DemoQA Elements](https://demoqa.com/elements) с использованием TypeScript, Playwright и Cucumber.
+This project represents an automation testing framework for web elements on [DemoQA Elements](https://demoqa.com/elements) using TypeScript, Playwright, and Cucumber for BDD approach implementation.
 
-## Структура проекта
+## Table of Contents
+
+- [Requirements](#requirements)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Running Tests](#running-tests)
+- [Implemented Tests](#implemented-tests)
+- [Extending Tests](#extending-tests)
+- [Technologies](#technologies)
+- [License](#license)
+
+## Requirements
+
+- Node.js (version 14 or higher)
+- npm (included with Node.js)
+- Supported operating systems:
+  - Windows 10/11
+  - macOS 10.15 (Catalina) or newer
+  - Ubuntu 20.04 or other Linux distributions
+
+## Project Structure
 
 ```
-├── cucumber.js          # Конфигурация Cucumber
-├── package.json         # Зависимости и скрипты npm
-├── tsconfig.json        # Конфигурация TypeScript
+├── cucumber.js          # Cucumber configuration
+├── package.json         # Dependencies and npm scripts
+├── tsconfig.json        # TypeScript configuration
+├── downloads/           # Directory for downloaded files during testing
 └── src/
-    ├── features/        # Cucumber фичи (BDD спецификации)
-    ├── pages/           # Классы Page Object Model
-    ├── step_definitions/# Шаги для Cucumber фич
-    └── support/         # Вспомогательные файлы
+    ├── features/        # Cucumber features (BDD specifications)
+    │   ├── text-box.feature
+    │   ├── check-box.feature
+    │   ├── radio-button.feature
+    │   └── ...
+    ├── pages/           # Page Object Model classes
+    │   ├── BasePage.ts
+    │   ├── TextBoxPage.ts
+    │   └── ...
+    ├── step_definitions/# Steps for Cucumber features
+    │   ├── text-box.steps.ts
+    │   └── ...
+    └── support/         # Helper files
+        ├── playwrightSetup.ts  # Playwright configuration
+        └── world.ts            # World configuration for Cucumber
 ```
 
-## Установка
+## Installation
 
-1. Клонируйте репозиторий
-2. Установите зависимости:
+1. Clone the repository:
+
+```bash
+git clone https://github.com/Takeso-user/pw-ts-demoqa.git
+cd pw-ts-demoqa
+```
+
+2. Install dependencies:
 
 ```bash
 npm install
 ```
 
-3. Установите браузеры для Playwright:
+3. Install Playwright browsers:
 
 ```bash
 npx playwright install
 ```
 
-## Запуск тестов
+## Running Tests
 
-### Запуск всех тестов
+### Run all tests
 
 ```bash
 npm test
 ```
 
-### Запуск конкретных тестов
+### Run specific tests
 
-- Тестирование Text Box:
+| Functionality | Command                     |
+| ------------- | --------------------------- |
+| Text Box      | `npm run test:text-box`     |
+| Check Box     | `npm run test:check-box`    |
+| Radio Button  | `npm run test:radio-button` |
 
-```bash
-npm run test:text-box
-```
-
-- Тестирование Check Box:
-
-```bash
-npm run test:check-box
-```
-
-- Тестирование Radio Button:
-
-```bash
-npm run test:radio-button
-```
-
-### Генерация отчета
+### Generate report
 
 ```bash
 npm run report
 ```
 
-После запуска в корневой директории проекта будет создан файл `cucumber-report.html` с отчетом о выполнении тестов.
+After running, a `cucumber-report.html` file will be created in the project root directory with the test execution report.
 
-## Реализованные тесты
+## Implemented Tests
 
-1. **Text Box**
+| Section                | Test Scenarios                                                                                                                          |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Text Box**           | • Filling all form fields and validating results<br>• Email validation                                                                  |
+| **Check Box**          | • Selecting the main "Home" checkbox and verifying child elements selection<br>• Selecting individual checkboxes and validating results |
+| **Radio Button**       | • Selecting "Yes" and "Impressive" radio buttons and validating results<br>• Verifying disabled state of the "No" radio button          |
+| **Buttons**            | • Testing clicks: single, double, and right click                                                                                       |
+| **Links**              | • Verifying functionality of different link types                                                                                       |
+| **Broken Links**       | • Testing valid and broken links and images                                                                                             |
+| **Upload Download**    | • Uploading a file to the server<br>• Downloading a file from the server                                                                |
+| **Dynamic Properties** | • Verifying element properties that change over time                                                                                    |
+| **Web Tables**         | • Adding new records<br>• Searching for records<br>• Editing records<br>• Deleting records                                              |
 
-   - Заполнение всех полей формы и проверка результатов
-   - Проверка валидации email
+## Extending Tests
 
-2. **Check Box**
+To add new tests:
 
-   - Выбор основного чекбокса "Home" и проверка выбора дочерних элементов
-   - Выбор отдельных чекбоксов и проверка результатов
+1. Create a new .feature file in the `src/features/` directory using Gherkin language
+2. Implement corresponding steps in `src/step_definitions/`
+3. If necessary, create or extend Page Object classes in `src/pages/`
 
-3. **Radio Button**
-   - Выбор радиокнопок "Yes" и "Impressive" и проверка результатов
-   - Проверка состояния отключенной радиокнопки "No"
+Example of creating a new test:
 
-## Расширение тестов
+1. Create a file `src/features/new-feature.feature`:
 
-Для добавления новых тестов:
+```gherkin
+Feature: New Functionality
 
-1. Создайте новый .feature файл в директории `src/features/`
-2. Реализуйте соответствующие шаги в `src/step_definitions/`
-3. При необходимости, создайте или расширьте классы Page Object в `src/pages/`
+  Scenario: Example scenario
+    Given the user is on the elements page
+    When they perform some action
+    Then they see the expected result
+```
+
+2. Create a file `src/step_definitions/new-feature.steps.ts` with step implementations.
+
+## Technologies
+
+- **TypeScript**: Typed JavaScript for better development experience
+- **Playwright**: Modern framework for web application testing automation
+- **Cucumber**: BDD framework for writing tests in a human-readable format
+- **Page Object Model**: Design pattern for organizing test code
+
+## License
+
+This project is distributed under the MIT License. See the [LICENSE](LICENSE) file for details.
