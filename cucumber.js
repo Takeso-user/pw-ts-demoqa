@@ -5,14 +5,14 @@ module.exports = {
     requireModule: ["ts-node/register"],
     format: [
       "@cucumber/pretty-formatter",
-      ["./node_modules/allure-cucumberjs/dist/cjs/reporter.js"]
+      ["./node_modules/allure-cucumberjs/dist/cjs/reporter.js"],
     ],
     parallel: 2,
     tags: "not @wip",
     formatOptions: {
       "allure-cucumberjs": {
-        resultsDir: "./allure-results"
-      }
-    }
+        resultsDir: "./allure-results",
+      },
+    },
   },
 };
