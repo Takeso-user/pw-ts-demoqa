@@ -20,11 +20,9 @@ export default class UploadDownloadPage extends BasePage {
     try {
       await this.page.click(this.downloadButton);
       
-      // Ждем небольшую паузу для начала загрузки
       await this.page.waitForTimeout(1000);
       
-      // Возвращаем путь к файлу, который должен быть создан
-      const fileName = 'sampleFile.jpeg'; // Статическое имя файла, которое мы ожидаем
+      const fileName = 'sampleFile.jpeg';
       const downloadPath = path.join(process.cwd(), 'downloads', fileName);
       
       const downloadsDir = path.dirname(downloadPath);

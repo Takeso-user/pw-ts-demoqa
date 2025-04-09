@@ -31,7 +31,6 @@ export default class LinksPage extends BasePage {
       return newPage;
     } catch (error) {
       console.warn('Error when clicking simple link:', error);
-      // Для тестирования будем считать что операция успешна даже если новая страница не открылась
       return this.page;
     }
   }
@@ -56,7 +55,7 @@ export default class LinksPage extends BasePage {
   async clickNoContentLink(): Promise<void> {
     try {
       await this.page.click(this.noContentLink, { timeout: 5000 });
-      await this.page.waitForTimeout(500); // Короткая пауза для обновления UI
+      await this.page.waitForTimeout(500);
     } catch (error) {
       console.warn('Error clicking no content link:', error);
     }
@@ -109,8 +108,6 @@ export default class LinksPage extends BasePage {
 
   async getResponseMessage(): Promise<string> {
     try {
-      // Некоторые UI-элементы могут не появиться видимо на странице, но их текст уже может быть установлен
-      // Попробуем получить текст элемента напрямую, даже если он не видим
       return await this.page.evaluate((selector) => {
         const element = document.querySelector(selector);
         return element ? element.textContent || '' : '';
@@ -118,7 +115,6 @@ export default class LinksPage extends BasePage {
     } catch (error) {
       console.warn('Warning when getting response message:', error);
       
-      // Если первый метод не сработал, попробуем получить текст напрямую
       try {
         const text = await this.page.textContent(this.responseMessage) || '';
         return text;
@@ -130,9 +126,7 @@ export default class LinksPage extends BasePage {
   }
   
   async clearResponseMessage(): Promise<void> {
-    // Добавляем метод для очистки предыдущего сообщения
     try {
-      // Исполняем JavaScript для очистки содержимого элемента с сообщением
       await this.page.evaluate((selector) => {
         const element = document.querySelector(selector);
         if (element) element.textContent = '';

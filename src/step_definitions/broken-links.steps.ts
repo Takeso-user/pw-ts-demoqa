@@ -36,7 +36,6 @@ Then('The page should return a 500 error', async function() {
 });
 
 Then('I should see the valid page', async function() {
-  // Placeholder implementation for the valid page check
   const currentUrl = this.page.url();
   expect(currentUrl).toContain('demoqa.com');
 });

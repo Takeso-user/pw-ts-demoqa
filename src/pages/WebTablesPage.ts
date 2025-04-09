@@ -35,7 +35,6 @@ export default class WebTablesPage extends BasePage {
       await this.page.waitForSelector(this.addButton, { timeout: 10000 });
     } catch (error) {
       console.warn('Warning when navigating to web tables:', error);
-      // Если возникла ошибка, попробуем еще раз перезагрузить страницу
       await this.page.reload();
       await this.page.waitForTimeout(1000);
     }

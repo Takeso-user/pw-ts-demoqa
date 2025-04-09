@@ -7,17 +7,15 @@ interface CustomWorld extends World {
   page: Page | undefined;
 }
 
-// Настройка браузера и страницы
 async function setupBrowser(this: CustomWorld) {
   this.browser = await chromium.launch({
     headless: false,
-    slowMo: 5 // Замедление для наглядности выполнения
+    slowMo: 5
   });
   this.context = await this.browser.newContext();
   this.page = await this.context.newPage();
 }
 
-// Закрытие браузера
 async function teardownBrowser(this: CustomWorld) {
   if (this.browser) {
     await this.browser.close();

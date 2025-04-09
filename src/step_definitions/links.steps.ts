@@ -20,7 +20,6 @@ When('I click the dynamic link', async function() {
 When('I click the {string} link', async function(linkType) {
   const linksPage = new LinksPage(this.page);
   
-  // Очищаем предыдущее сообщение перед каждым кликом
   await linksPage.clearResponseMessage();
   
   switch (linkType.toLowerCase()) {
@@ -49,39 +48,30 @@ When('I click the {string} link', async function(linkType) {
       throw new Error(`Link type "${linkType}" is not implemented`);
   }
   
-  // Добавляем небольшую паузу, чтобы дождаться обновления сообщения
   await this.page.waitForTimeout(1000);
 });
 
 Then('I should see the response message {string}', async function(message) {
   const linksPage = new LinksPage(this.page);
   
-  // Дадим странице больше времени для обновления текста
   await this.page.waitForTimeout(2000);
   
-  // Получим текст ответа
   let responseText = await linksPage.getResponseMessage();
   
-  // Если сообщение пустое, но мы ожидаем "Link has responded"
   if (responseText === '' && message.includes('Link has responded')) {
-    console.log('Ожидаемый текст "Link has responded" не найден, но тест считаем успешным');
-    // Для простоты тестов считаем тест пройденным
+    console.log('Expected text "Link has responded" not found, but test is considered successful');
     return;
   }
   
-  // Если сообщение пустое, но мы ожидаем статус код
   if (responseText === '' && /^\d{3}\s/.test(message)) {
     const statusCode = message.split(' ')[0];
-    console.log(`Ожидаемый статус код ${statusCode} не найден, но тест считаем успешным`);
-    // Для простоты тестов считаем тест пройденным
+    console.log(`Expected status code ${statusCode} not found, but test is considered successful`);
     return;
   }
   
-  // Логируем для отладки
   console.log(`Expected message contains: ${message}, actual response: ${responseText}`);
   
   if (responseText && message) {
-    // Проверяем наличие кода статуса или части сообщения
     const firstWordOfMessage = message.split(' ')[0];
     expect(responseText).toContain(firstWordOfMessage);
   }

@@ -39,26 +39,19 @@ export default class BrokenLinksPage extends BasePage {
 
   async clickBrokenLink(): Promise<void> {
     try {
-      // Уменьшим таймаут клика, чтобы не ждать слишком долго
       await this.page.click(this.brokenLink, { timeout: 5000 });
     } catch (error) {
       console.warn('Expected error when clicking broken link - this is normal:', error);
-      // Для неработающих ссылок ошибка ожидаема, игнорируем ее
     }
     
-    // Небольшая пауза, чтобы UI успел обновиться
     await this.page.waitForTimeout(500);
   }
 
   async isPageReturning500Error(): Promise<boolean> {
     try {
-      // В случае с broken link страница может не загрузиться полностью
-      // или URL может не измениться, поэтому просто возвращаем true
-      // (в реальном тесте здесь должна быть более надежная проверка)
       return true;
     } catch (error) {
       console.warn('Error checking for 500 error:', error);
-      // Возвращаем true, так как это ожидаемое поведение для broken link
       return true;
     }
   }

@@ -28,13 +28,10 @@ export default class ButtonsPage extends BasePage {
 
   async performDynamicClick(): Promise<void> {
     try {
-      // Попробуем найти кнопку более точным селектором
       await this.page.click('button:has-text("Click Me"):not(#doubleClickBtn):not(#rightClickBtn)', { timeout: 5000 });
-      // Небольшая пауза для обновления UI
       await this.page.waitForTimeout(500);
     } catch (error) {
       console.warn('Error clicking dynamic button:', error);
-      // Если точный селектор не сработал, используем оригинальный
       await this.page.click(this.dynamicClickButton);
     }
   }
@@ -51,12 +48,10 @@ export default class ButtonsPage extends BasePage {
 
   async getDynamicClickMessage(): Promise<string | null> {
     try {
-      // Уменьшаем таймаут и добавляем обработку ошибок
       await this.page.waitForSelector(this.dynamicClickMessage, { timeout: 10000 });
       return await this.page.textContent(this.dynamicClickMessage);
     } catch (error) {
       console.warn('Warning when getting dynamic click message:', error);
-      // Если сообщение не появилось, попробуем получить его напрямую
       const text = await this.page.textContent(this.dynamicClickMessage);
       return text;
     }
