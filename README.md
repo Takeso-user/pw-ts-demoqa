@@ -9,8 +9,10 @@ This project represents an automation testing framework for web elements on [Dem
 - [Installation](#installation)
 - [Running Tests](#running-tests)
 - [Allure Reporting](#allure-reporting)
+- [CI/CD with GitHub Actions](#cicd-with-github-actions)
 - [Implemented Tests](#implemented-tests)
 - [Extending Tests](#extending-tests)
+- [Tagging System for Tests](#tagging-system-for-tests)
 - [Technologies](#technologies)
 - [License](#license)
 
@@ -94,13 +96,76 @@ npm run test:ci
 npm run test:dev
 ```
 
-### Run specific tests
+### Run specific features
 
 | Functionality | CI/CD Mode                     | Development Mode                |
 | ------------- | ------------------------------ | ------------------------------- |
 | Text Box      | `npm run test:ci:text-box`     | `npm run test:dev:text-box`     |
 | Check Box     | `npm run test:ci:check-box`    | `npm run test:dev:check-box`    |
 | Radio Button  | `npm run test:ci:radio-button` | `npm run test:dev:radio-button` |
+
+### Run tests by tag
+
+You can run tests selectively based on tags applied to features and scenarios:
+
+```bash
+# Run all smoke tests
+npm run test:smoke
+
+# Run all regression tests
+npm run test:regression
+
+# Run high priority tests
+npm run test:priority-high
+
+# Run medium priority tests
+npm run test:priority-medium
+
+# Run low priority tests
+npm run test:priority-low
+
+# Run form-related tests
+npm run test:form
+
+# Run checkbox-related tests
+npm run test:checkbox
+
+# Run tests with the debug tag
+npm run test:debug
+
+# Run tests that deliberately fail (for screenshot testing)
+npm run test:fail
+
+# Run screenshot-related tests
+npm run test:screenshot
+
+# Run smoke tests in CI mode
+npm run test:ci:smoke
+
+# Run smoke tests in development mode
+npm run test:dev:smoke
+
+# Generate Allure reports for smoke tests
+npm run test:allure:smoke
+```
+
+### Using complex tag expressions
+
+You can also run tests with complex tag expressions directly from the command line:
+
+```bash
+# Run tests that have both @smoke and @priority-high tags
+npx cucumber-js --tags "@smoke and @priority-high"
+
+# Run tests that have either @smoke or @regression tags
+npx cucumber-js --tags "@smoke or @regression"
+
+# Run all tests except screenshot tests
+npx cucumber-js --tags "not @screenshot"
+
+# Run form tests that are high priority
+npx cucumber-js --tags "@form and @priority-high"
+```
 
 ### Generate report
 
@@ -177,6 +242,44 @@ stage('Test') {
 }
 ```
 
+## CI/CD with GitHub Actions
+
+This project is configured with GitHub Actions for continuous integration and continuous deployment. The workflow automates test execution and report generation whenever code is pushed to the main branch or a pull request is created.
+
+### Workflow Configuration
+
+The GitHub Actions workflow is defined in `.github/workflows/ci.yml` and includes the following features:
+
+- **Automated Test Execution**: Runs smoke tests automatically on pushes and pull requests
+- **Custom Test Execution**: Allows manual triggering with custom tag expressions
+- **Report Generation**: Creates and publishes Allure reports
+- **Artifact Storage**: Stores test reports and failure screenshots as GitHub artifacts
+- **GitHub Pages Deployment**: Publishes Allure reports to GitHub Pages for easy access
+
+### Running Tests Manually in GitHub Actions
+
+You can manually trigger the workflow and specify which tests to run using the GitHub Actions UI:
+
+1. Go to the "Actions" tab in your GitHub repository
+2. Select the "DemoQA Tests CI/CD" workflow
+3. Click "Run workflow"
+4. Optionally, enter a Cucumber tag expression (e.g., `@regression and @priority-high`)
+5. Click "Run workflow" to start the tests
+
+### Viewing Reports
+
+After tests have run, you can view the reports in several ways:
+
+1. **GitHub Pages**: For pushes to the main branch, the Allure report is published to GitHub Pages
+2. **Workflow Artifacts**: Every workflow run stores the following artifacts:
+   - `allure-report`: The full Allure HTML report
+   - `cucumber-report`: The Cucumber HTML report
+   - `screenshots`: Screenshots captured on test failures (only if failures occurred)
+
+### Local vs CI Execution
+
+The CI/CD pipeline uses headless browsers in CI mode for efficient execution. When developing locally, you can still use the development mode for visual debugging as described in the [Running Tests](#running-tests) section.
+
 ## Implemented Tests
 
 | Section                | Test Scenarios                                                                                                                          |
@@ -225,3 +328,87 @@ Feature: New Functionality
 ## License
 
 This project is distributed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Tagging System for Tests
+
+This project utilizes Cucumber tags to categorize and organize tests. Tags are applied at both feature and scenario levels to provide flexible test execution options.
+
+### Tag Categories
+
+| Category     | Tags                                                  | Description                                           |
+| ------------ | ----------------------------------------------------- | ----------------------------------------------------- |
+| **Priority** | `@priority-high`, `@priority-medium`, `@priority-low` | Test importance level for execution prioritization    |
+| **Scope**    | `@smoke`, `@regression`                               | Test scope and purpose                                |
+| **Type**     | `@positive`, `@negative`, `@validation`               | Type of test case                                     |
+| **Feature**  | `@form`, `@checkbox`, `@elements`                     | Specific feature area or component being tested       |
+| **Special**  | `@debug`, `@screenshot`, `@fail`                      | Special purposes like debugging or screenshot testing |
+
+### Tag Usage in Feature Files
+
+Tags are added at the feature level to categorize all scenarios in that feature:
+
+```gherkin
+@form @elements @regression
+Feature: TextBox Elements
+    As a user of demoqa.com website
+    I want to test the functionality of text fields
+    So that I can ensure they work correctly
+```
+
+Tags can also be added to individual scenarios for more precise categorization:
+
+```gherkin
+@positive @smoke @priority-high
+Scenario: Fill and submit form with text fields
+    Given I open the Text Box page
+    When I fill the Full Name field with "John Doe"
+    # ...remaining steps
+```
+
+### Adding Tags to New Tests
+
+When extending the test suite with new scenarios, follow these tagging guidelines:
+
+1. Apply relevant feature-level tags to categorize the entire feature
+2. Apply scenario-level tags to indicate:
+   - Priority (`@priority-high`, `@priority-medium`, `@priority-low`)
+   - Test type (`@positive`, `@negative`, etc.)
+   - Scope (`@smoke` for critical paths, `@regression` for comprehensive testing)
+   - Special designations if applicable (`@debug`, `@fail`, etc.)
+
+Example of a properly tagged new scenario:
+
+```gherkin
+@positive @regression @priority-medium
+Scenario: Verify form data persistence
+    Given I have filled the form with valid data
+    When I navigate away and return to the form
+    Then my data should still be present in the form fields
+```
+
+### Combining Tags with Run Modes
+
+You can combine tag selections with environment modes for maximum flexibility:
+
+```bash
+# Run high priority smoke tests in CI mode
+cross-env TEST_MODE=ci cucumber-js --tags "@smoke and @priority-high"
+
+# Run form tests but exclude validation tests in development mode
+cross-env TEST_MODE=dev cucumber-js --tags "@form and not @validation"
+
+# Run regression tests but not debug tests with Allure reporting
+npm run allure:clean && cross-env TEST_MODE=ci cucumber-js --tags "@regression and not @debug"
+```
+
+### Running Tagged Tests with Allure Reports
+
+To run tagged tests with Allure reporting:
+
+```bash
+# Run and generate Allure report for smoke tests
+npm run test:allure:smoke
+
+# Custom tag expression with Allure reporting
+npm run allure:clean && cucumber-js --tags "@priority-high and @elements" && npm run allure:generate
+```
