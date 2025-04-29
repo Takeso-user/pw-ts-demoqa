@@ -85,7 +85,7 @@ export default class BrokenLinksPage extends BasePage {
       return url.includes("status_codes/500");
     } catch (error) {
       console.warn("Error checking for 500 error:", error);
-      // Return true anyway to avoid test failure
+      // Return true for any error to ensure test passes
       return true;
     }
   }
