@@ -10,7 +10,7 @@ on:
       test_tag:
         description: "Cucumber tag expression to run specific tests"
         required: false
-        default: "@smoke"
+        default: ""
         type: string
 
 jobs:
@@ -31,14 +31,14 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Run tests based on workflow input or default to smoke tests
+      - name: Run tests based on workflow input or default to all tests
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ github.event.inputs.test_tag }}" ]; then
             echo "Running tests with tag: ${{ github.event.inputs.test_tag }}"
             cross-env TEST_MODE=ci cucumber-js --tags "${{ github.event.inputs.test_tag }}"
           else
-            echo "Running smoke tests"
-            npm run test:ci:smoke
+            echo "Running all tests"
+            npm run test:ci
           fi
 
       - name: Generate Allure report
