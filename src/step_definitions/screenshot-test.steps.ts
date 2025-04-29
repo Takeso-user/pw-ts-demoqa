@@ -20,7 +20,7 @@ When("I simulate an exception to trigger a screenshot", async function () {
         "Running in CI mode: skipping actual exception, simulating success instead"
       );
       this.simulatedException = new Error("Simulated exception for CI");
-      
+
       // Create screenshots directory if it doesn't exist
       const screenshotsDir = path.join(process.cwd(), "screenshots");
       if (!fs.existsSync(screenshotsDir)) {
@@ -33,10 +33,10 @@ When("I simulate an exception to trigger a screenshot", async function () {
         screenshotsDir,
         `${scenarioName}-${this.exceptionTimestamp}.png`
       );
-      
+
       fs.writeFileSync(screenshotPath, "Dummy screenshot for CI", "utf8");
       console.log(`Created dummy screenshot file at: ${screenshotPath}`);
-      
+
       // Store screenshot path for verification in the next step
       this.screenshotPath = screenshotPath;
       return; // Skip the rest of the function in CI mode

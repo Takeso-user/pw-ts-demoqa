@@ -1,13 +1,16 @@
+@broken-links @elements @regression
 Feature: Broken Links and Images
     As a user of demoqa.com website
     I want to test the functionality of broken links and images
     So that I can ensure they work correctly
 
+    @images @visual @smoke
     Scenario: Valid and broken images
         Given I open the Broken Links page
         Then The valid image should be loaded
         And The broken image should not be loaded
 
+    @links @navigation @smoke @current-test
     Scenario: Valid and broken links
         Given I open the Broken Links page
         When I click the valid link

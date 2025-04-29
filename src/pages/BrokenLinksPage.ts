@@ -51,22 +51,17 @@ export default class BrokenLinksPage extends BasePage {
   }
 
   async clickBrokenLink(): Promise<void> {
-    // In CI mode, don't actually try to click the broken link
-    if (process.env.TEST_MODE === "ci") {
-      console.log(
-        "CI mode - Simulating broken link click without actually clicking"
-      );
-      return;
-    }
-
     try {
-      // In development mode, attempt to click with timeout
       await this.page.click(this.brokenLink, { timeout: 5000 });
-    } catch (error) {
-      console.warn(
-        "Expected error when clicking broken link - this is normal:",
-        error
-      );
+    } catch (error: any) {
+      console.log("Error clicking broken link:", error.message);
+      if (process.env.TEST_MODE === "ci") {
+        console.log("Error clicking broken link in CI mode, continuing anyway");
+      } else {
+        console.log(
+          "Expected error when clicking broken link - this is normal"
+        );
+      }
     }
 
     await this.page.waitForTimeout(500);

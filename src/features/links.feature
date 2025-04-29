@@ -1,8 +1,10 @@
+@links @elements @regression
 Feature: Links Elements
     As a user of demoqa.com website
     I want to test the functionality of links
     So that I can ensure they work correctly
 
+    @navigation @smoke
     Scenario: Clicking simple and dynamic links
         Given I open the Links page
         When I click the simple link
@@ -10,6 +12,7 @@ Feature: Links Elements
         When I click the dynamic link
         Then I should see the response message "Link has responded"
 
+    @api @status-codes
     Scenario: Clicking various status links
         Given I open the Links page
         When I click the "created" link
