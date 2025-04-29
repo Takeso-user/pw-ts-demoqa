@@ -28,39 +28,22 @@ When("I click the broken link", async function () {
   try {
     const brokenLinksPage = new BrokenLinksPage(this.page);
     await brokenLinksPage.clickBrokenLink();
-  } catch (error) {
-    // In CI mode, we'll ignore errors and continue
+  } catch (error: any) {
     if (process.env.TEST_MODE === "ci") {
-      console.log("Error clicking broken link in CI mode, ignoring:", error);
+      console.log("Error clicking broken link in CI mode, ignoring:", error.message);
     } else {
-       console.log("Error clicking broken link in DEV mode, ignoring:", error);
+       console.log("Error clicking broken link in DEV mode, ignoring:", error.message);
     }
   }
 });
 
 Then("The page should return a 500 error", async function () {
-  const isCI = process.env.TEST_MODE === "ci";
-  if (isCI) {
-    console.log(
-      "CI mode - Skipping 500 error check, test is considered successful"
-    );
-    return;
-  }
-
   const brokenLinksPage = new BrokenLinksPage(this.page);
   const isError = await brokenLinksPage.isPageReturning500Error();
   expect(isError).toBe(true);
 });
 
 Then("I should see the valid page", async function () {
-  const isCI = process.env.TEST_MODE === "ci";
-  if (isCI) {
-    console.log(
-      "CI mode - Skipping valid page check, test is considered successful"
-    );
-    return;
-  }
-
   const currentUrl = this.page.url();
   expect(currentUrl).toContain("demoqa.com");
 });
