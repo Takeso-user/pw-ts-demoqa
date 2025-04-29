@@ -49,13 +49,13 @@ When("I click the {string} link", async function (linkType) {
   }
 
   // Add a shorter timeout in CI mode
-  const isCI = process.env.TEST_MODE === 'ci';
+  const isCI = process.env.TEST_MODE === "ci";
   await this.page.waitForTimeout(isCI ? 500 : 1000);
 });
 
 Then("I should see the response message {string}", async function (message) {
   const linksPage = new LinksPage(this.page);
-  const isCI = process.env.TEST_MODE === 'ci';
+  const isCI = process.env.TEST_MODE === "ci";
 
   // Add a shorter timeout in CI mode
   await this.page.waitForTimeout(isCI ? 1000 : 2000);
@@ -84,7 +84,9 @@ Then("I should see the response message {string}", async function (message) {
     if (isCI) {
       console.log(`CI mode - Checking response: ${responseText}`);
       console.log(`CI mode - Expected message: ${message}`);
-      console.log('CI mode - Considering test successful regardless of response content');
+      console.log(
+        "CI mode - Considering test successful regardless of response content"
+      );
       return;
     }
 
@@ -104,7 +106,10 @@ Then("I should see the response message {string}", async function (message) {
   } catch (error) {
     // In CI mode, don't fail the test
     if (isCI) {
-      console.log('Error in link response test, but ignoring in CI mode:', error);
+      console.log(
+        "Error in link response test, but ignoring in CI mode:",
+        error
+      );
       return;
     }
     throw error;

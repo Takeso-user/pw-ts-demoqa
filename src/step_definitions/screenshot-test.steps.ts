@@ -9,19 +9,23 @@ import * as path from "path";
  */
 When("I simulate an exception to trigger a screenshot", async function () {
   // Check if running in CI mode
-  const isCI = process.env.TEST_MODE === 'ci';
-  
+  const isCI = process.env.TEST_MODE === "ci";
+
   // Store current timestamp before taking action to identify our screenshot later
   this.exceptionTimestamp = new Date().toISOString().replace(/[:.]/g, "-");
 
   try {
     if (isCI) {
       // In CI mode, simulate success instead of causing an exception
-      console.log("Running in CI mode: skipping actual exception, simulating success instead");
+      console.log(
+        "Running in CI mode: skipping actual exception, simulating success instead"
+      );
       this.simulatedException = new Error("Simulated exception for CI");
     } else {
       // In development mode, actually cause the exception
-      console.log("Intentionally interacting with a non-existent element to trigger screenshot...");
+      console.log(
+        "Intentionally interacting with a non-existent element to trigger screenshot..."
+      );
       await this.page.click("#non-existent-element", { timeout: 1000 });
       throw new Error("Expected exception was not thrown");
     }
@@ -48,7 +52,7 @@ When("I simulate an exception to trigger a screenshot", async function () {
       const screenshot = await this.page.screenshot({
         path: screenshotPath,
         fullPage: true,
-        timeout: isCI ? 5000 : 30000
+        timeout: isCI ? 5000 : 30000,
       });
       console.log(`📸 Screenshot saved to: ${screenshotPath}`);
 
@@ -60,11 +64,11 @@ When("I simulate an exception to trigger a screenshot", async function () {
       console.error("Failed to capture screenshot:", screenshotError);
       // For CI, we'll create a dummy file so the test doesn't fail
       if (isCI) {
-        fs.writeFileSync(screenshotPath, "Dummy screenshot for CI", 'utf8');
+        fs.writeFileSync(screenshotPath, "Dummy screenshot for CI", "utf8");
         console.log(`Created dummy screenshot file at: ${screenshotPath}`);
       }
     }
-    
+
     // Store screenshot path for verification in the next step
     this.screenshotPath = screenshotPath;
   }
@@ -76,8 +80,8 @@ When("I simulate an exception to trigger a screenshot", async function () {
 Then(
   "I should verify the screenshot was captured successfully",
   async function () {
-    const isCI = process.env.TEST_MODE === 'ci';
-    
+    const isCI = process.env.TEST_MODE === "ci";
+
     // Verify that we have a screenshot path from the previous step
     expect(this.screenshotPath).toBeDefined();
 
@@ -85,18 +89,24 @@ Then(
     if (isCI) {
       // In CI mode, if file doesn't exist, create a dummy one
       if (!fs.existsSync(this.screenshotPath)) {
-        fs.writeFileSync(this.screenshotPath, "Dummy screenshot for CI", 'utf8');
-        console.log(`Created dummy file for CI testing: ${this.screenshotPath}`);
+        fs.writeFileSync(
+          this.screenshotPath,
+          "Dummy screenshot for CI",
+          "utf8"
+        );
+        console.log(
+          `Created dummy file for CI testing: ${this.screenshotPath}`
+        );
       }
       console.log("✅ CI mode: Screenshot test considered successful");
     } else {
       // In development mode, do full verification
       const fileExists = fs.existsSync(this.screenshotPath);
       expect(fileExists).toBeTruthy();
-      
+
       const fileStats = fs.statSync(this.screenshotPath);
       expect(fileStats.size).toBeGreaterThan(0);
-      
+
       console.log("✅ Screenshot functionality verified successfully");
       console.log(`✅ Screenshot file: ${this.screenshotPath}`);
       console.log(`✅ Screenshot size: ${fileStats.size} bytes`);
