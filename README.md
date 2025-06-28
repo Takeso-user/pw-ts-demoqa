@@ -184,7 +184,7 @@ After running, HTML reports will be created in the project root directory with t
 
 ## Allure Reporting
 
-This project is configured with Allure reporting to provide detailed and interactive test reports suitable for CI/CD environments like Jenkins.
+This project is configured with Allure reporting to provide detailed and interactive test reports suitable for CI/CD environments like Jenkins and GitHub Actions.
 
 ### Running Tests with Allure
 
@@ -211,6 +211,17 @@ npm run allure:generate
 # Open the Allure report in your default browser
 npm run allure:open
 ```
+
+### GitHub Pages Integration
+
+Тесты автоматически запускаются при push в main/master ветку, и Allure отчеты публикуются на GitHub Pages:
+
+1. **Автоматическая публикация**: При каждом push в main/master ветку, тесты запускаются автоматически
+2. **Доступ к отчету**: После успешного выполнения CI/CD, отчет будет доступен по адресу:
+   ```
+   https://[ваш-username].github.io/[название-репозитория]/
+   ```
+3. **Ручной запуск**: Вы можете запустить тесты вручную через GitHub Actions с конкретными тегами
 
 ### Jenkins Integration
 
@@ -268,13 +279,30 @@ You can manually trigger the workflow and specify which tests to run using the G
 
 ### Viewing Reports
 
-After tests have run, you can view the reports in several ways:
+После запуска тестов, вы можете просматривать отчеты несколькими способами:
 
-1. **GitHub Pages**: For pushes to the main branch, the Allure report is published to GitHub Pages
-2. **Workflow Artifacts**: Every workflow run stores the following artifacts:
-   - `allure-report`: The full Allure HTML report
-   - `cucumber-report`: The Cucumber HTML report
-   - `screenshots`: Screenshots captured on test failures (only if failures occurred)
+1. **GitHub Pages (рекомендуется)**: 
+   - Для push'ей в main/master ветку, Allure отчет автоматически публикуется на GitHub Pages
+   - URL: `https://[ваш-username].github.io/[название-репозитория]/`
+   - Отчет содержит интерактивные диаграммы, детали тестов, скриншоты и историю выполнения
+
+2. **GitHub Actions Artifacts**: 
+   - Каждый запуск workflow сохраняет следующие артефакты:
+   - `allure-report`: Полный Allure HTML отчет
+   - `cucumber-report`: Cucumber HTML отчет  
+   - `screenshots`: Скриншоты при ошибках тестов (только при наличии ошибок)
+
+3. **Локальный просмотр**:
+   - Скачайте артефакт `allure-report` из GitHub Actions
+   - Распакуйте и откройте `index.html` в браузере
+
+### Настройка GitHub Pages
+
+Для работы с GitHub Pages убедитесь, что в настройках репозитория:
+
+1. Перейдите в Settings → Pages
+2. В разделе "Source" выберите "GitHub Actions"
+3. После первого успешного деплоя, ваш отчет будет доступен по указанному URL
 
 ### Local vs CI Execution
 

@@ -22,7 +22,7 @@
     "allure:generate": "allure generate allure-results -o allure-report --clean",
     "allure:open": "allure open allure-report",
     "test:allure": "npm run allure:clean && cucumber-js",
-    "test:allure:ci": "cross-env TEST_MODE=ci npm run allure:clean && cross-env TEST_MODE=ci cucumber-js",
+    "test:allure:ci": "cross-env TEST_MODE=ci cucumber-js",
     "test:allure:dev": "cross-env TEST_MODE=dev npm run allure:clean && cross-env TEST_MODE=dev cucumber-js",
     "posttest:allure": "npm run allure:generate",
     "test:smoke": "cucumber-js --tags '@smoke'",

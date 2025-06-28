@@ -1,0 +1,31 @@
+
+name: Docker Test
+
+on:
+  push:
+    branches:
+      - docker-integration
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t pw-ts-demoqa .
+
+      - name: Run tests
+        run: |
+          mkdir -p allure-results
+          docker run --rm -v $(pwd)/allure-results:/usr/src/app/allure-results --ipc=host pw-ts-demoqa
+
+      - name: Allure Report
+        uses: simple-elf/allure-report-action@v1.7
+        with:
+          allure_results: allure-results
+          gh_pages: gh-pages
+          allure_report: allure-report
+          allure_history: allure-history

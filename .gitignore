@@ -20,7 +20,7 @@ jspm_packages/
 
 .npm
 
-cucumber-report.html
+cucumber-report*.html
 reports/
 
 .env
