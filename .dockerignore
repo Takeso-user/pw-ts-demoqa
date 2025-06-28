@@ -1,0 +1,10 @@
+node_modules
+.git
+.gitignore
+.vscode
+allure-report
+allure-results
+downloads
+screenshots
+cucumber-report-dev.html
+cucumber-report.html
