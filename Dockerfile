@@ -21,4 +21,4 @@ COPY . .
 # EXPOSE 3000 
 
 # The command to run the tests.
-CMD ["npm", "run", "test:allure"]
+CMD ["npm", "run", "test:allure:ci"]
