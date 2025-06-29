@@ -92,7 +92,7 @@ npm run allure:generate
 ```bash
 # Примеры тегов
 @smoke           # Дымовые тесты
-@regression      # Регрессионные тесты
+- @regression      # Регрессионные тесты
 @priority-high   # Высокоприоритетные тесты
 @elements        # Тесты элементов
 ```

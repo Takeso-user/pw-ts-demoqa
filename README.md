@@ -283,20 +283,20 @@ You can manually trigger the workflow and specify which tests to run using the G
 
 1. **GitHub Pages (рекомендуется)**:
 
-   - Для push'ей в main/master ветку, Allure отчет автоматически публикуется на GitHub Pages
-   - URL: `https://[ваш-username].github.io/[название-репозитория]/`
-   - Отчет содержит интерактивные диаграммы, детали тестов, скриншоты и историю выполнения
+  - Для push'ей в main/master ветку, Allure отчет автоматически публикуется на GitHub Pages
+  - URL: `https://[ваш-username].github.io/[название-репозитория]/`
+  - Отчет содержит интерактивные диаграммы, детали тестов, скриншоты и историю выполнения
 
 2. **GitHub Actions Artifacts**:
 
-   - Каждый запуск workflow сохраняет следующие артефакты:
-   - `allure-report`: Полный Allure HTML отчет
-   - `cucumber-report`: Cucumber HTML отчет
-   - `screenshots`: Скриншоты при ошибках тестов (только при наличии ошибок)
+    - Каждый запуск workflow сохраняет следующие артефакты:
+      - `allure-report`: Полный Allure HTML отчет
+      - `cucumber-report`: Cucumber HTML отчет
+      - `screenshots`: Скриншоты при ошибках тестов (только при наличии ошибок)
 
-3. **Локальный просмотр**:
-   - Скачайте артефакт `allure-report` из GitHub Actions
-   - Распакуйте и откройте `index.html` в браузере
+1. **Локальный просмотр**:
+  - Скачайте артефакт `allure-report` из GitHub Actions
+  - Распакуйте и откройте `index.html` в браузере
 
 ### Настройка GitHub Pages
 
